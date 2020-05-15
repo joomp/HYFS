@@ -14,16 +14,12 @@ const App = () => {
     const [ filterer, setFilter ] = useState('')
   
     useEffect( () => {
-      refreshPersons()
-    }, [])
-  
-    const refreshPersons = () => {
         contactService.getAll()
         .then( response => {
             setPersons(response)
         })
-    }
-
+    }, [])
+  
     const addName = (event) => {
         const newContact = {
             name: newName,
@@ -32,26 +28,28 @@ const App = () => {
 
         event.preventDefault()
         if( persons.some(person => person.name === newName) ){
+            const person = persons.find(p => p.name === newContact.name)
             const message = `${newName} is already in phonebook. Do you want to update their information?`
             const result = window.confirm(message)
             if (!result){
                 return
             }
-            contactService.update(getID(newName), newContact).then( resp => refreshPersons())
+            contactService.update(person.id, newContact).then(res => {
+                setPersons(persons.map(p => p.name === newContact.name ? res : p))
+            })
             setNewName('')
             setNewNum('')
             showNotification(`${newContact.name}'s number was changed succesfully`)
             return
         } 
-        contactService.create(newContact).then(resp => {
+        contactService.create(newContact).then(res => {
+            console.log(res)
             setNewName('')
             setNewNum('')
-            refreshPersons()
+            setPersons(persons.concat(res))
             showNotification(`${newContact.name} was added succesfully`)
         })
     } 
-
-    const getID = (name) => persons.find(person => person.name === name ).id
 
     const showNotification = msg => {
         setNotification(msg)
@@ -82,7 +80,7 @@ const App = () => {
         <PersonForm newName = {newName} setNewName = {setNewName} newNum = {newNum} 
          setNewNum = {setNewNum} addName = {addName}/>
         <h2>Numbers</h2>
-        <Contacts refresh = {refreshPersons} contacts = {contactsToShow()} notification = {showNotification}
+        <Contacts persons = {persons} setPersons = {setPersons} contacts = {contactsToShow()} notification = {showNotification}
             error = {showError}/>
       </div>
     )
