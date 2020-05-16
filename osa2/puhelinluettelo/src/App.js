@@ -35,11 +35,13 @@ const App = () => {
                 return
             }
             contactService.update(person.id, newContact).then(res => {
-                setPersons(persons.map(p => p.name === newContact.name ? res : p))
+                showNotification(`${newContact.name}'s number was changed succesfully`)
+            }).catch(e => {
+                showError(`Error in changing ${newContact.name}'s information`)
             })
+            setPersons(persons.map(p => p.name === newContact.name ? {...p, ...newContact} : p))
             setNewName('')
             setNewNum('')
-            showNotification(`${newContact.name}'s number was changed succesfully`)
             return
         } 
         contactService.create(newContact).then(res => {
