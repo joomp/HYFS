@@ -50,6 +50,8 @@ const App = () => {
             setNewNum('')
             setPersons(persons.concat(res))
             showNotification(`${newContact.name} was added succesfully`)
+        }).catch(error => {
+            showError(error.response.data.error)
         })
     } 
 
