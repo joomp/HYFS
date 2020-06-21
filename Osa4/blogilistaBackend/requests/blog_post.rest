@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpZCI6IjVlZTVlY2U0NGU4NzhjMDk5NDViYjkxMCIsImlhdCI6MTU5MjEyNzA1OX0.5YRUjXTDfLE6J4zPErp0fbKMDPXtDh2678o4H_lV3wg
+
+{
+    "title": "Blogin lisääminen vain kirjautuneille, osa 2",
+    "author": "tuntematon",
+    "url": "/api/login",
+    "likes": 0
+}
