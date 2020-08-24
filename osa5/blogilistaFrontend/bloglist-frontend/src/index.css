@@ -14,15 +14,39 @@ code {
     monospace;
 }
 
-.container {
-}
-
 .error {
   background: red;
 }
 
 .notification {
   background: green;
+}
+
+.blog {
+  border-radius: 1px 20px 1px 5px;
+  border-width: 0.4ch;
+  border-style: solid;
+  clear: both;
+  display: block;
+  padding: 1%;
+  cursor: pointer;
+  user-select: none; 
+}
+
+.blog:hover {
+  background: gray;
+}
+
+.blog:active {
+  background: darkgray;
+}
+
+.blogTitle:hover {
+  color: white;
+}
+
+.blogTitle:active {
+  color: black;
 }
 
 #notification {

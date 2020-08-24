@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 
 const Login = ({login}) => {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState("käyttäjä")
+  const [password, setPassword] = useState("salasana")
 
   const handleLogin = async (e) => {
     e.preventDefault()
