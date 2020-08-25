@@ -34,7 +34,7 @@ const put = (blog) => {
 
   const request = axios.put(`${baseUrl}/${blog.id}`, newBlog, config)
   return request.then(response => response.data)
-} 
+}
 
 const remove = (blog) => {
   const config = {
@@ -42,6 +42,6 @@ const remove = (blog) => {
   }
   const request = axios.delete(`${baseUrl}/${blog.id}`, config)
   return request.then(response => response.data)
-} 
+}
 
-export default { getAll, add, setToken, put, remove}
+export default { getAll, add, setToken, put, remove }

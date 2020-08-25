@@ -1,12 +1,12 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-const Login = ({login}) => {
-  const [username, setUsername] = useState("käyttäjä")
-  const [password, setPassword] = useState("salasana")
+const Login = ({ login }) => {
+  const [username, setUsername] = useState('käyttäjä')
+  const [password, setPassword] = useState('salasana')
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    login({username, password})
+    login({ username, password })
     setUsername('')
     setPassword('')
   }

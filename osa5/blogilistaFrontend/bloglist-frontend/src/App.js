@@ -13,18 +13,18 @@ const App = () => {
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [notificationTimeout, setNotificationTimeout] = useState(null)
   const [notificationClass, setNotificationClass] = useState('notification')
-  const AddBlogFormRef = useRef()
+  const AddBlogFormToggleRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs.sort( (a, b) => -a.likes + b.likes ))
-    )  
+    )
   }, [])
 
   const notificationDisplayTime = 3000
 
   const displayNotification = (message, className) => {
-    setNotificationClass(className) 
+    setNotificationClass(className)
     setNotificationMessage(message)
     if (notificationTimeout !== null){
       clearTimeout(notificationTimeout)
@@ -49,7 +49,7 @@ const App = () => {
       const user = await loginService.login(credentials)
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
-      ) 
+      )
       setUser(user)
       blogService.setToken(user.token)
       let blogs = await blogService.getAll()
@@ -73,7 +73,7 @@ const App = () => {
     try {
       const response = await blogService.add(blog)
       console.log(response)
-      AddBlogFormRef.current.toggleVisibility()
+      AddBlogFormToggleRef.current.toggleVisibility()
       setBlogs(blogs.concat(response))
       displayNotification(`New blog added: ${blog.title} by ${blog.author}`, 'notification')
     } catch(exception) {
@@ -84,10 +84,10 @@ const App = () => {
 
   const like = async (blog) => {
     let foo = blogs.map( (iter) => {
-      return iter.id === blog.id ? {...iter, likes: iter.likes + 1} : iter
+      return iter.id === blog.id ? { ...iter, likes: iter.likes + 1 } : iter
     })
     setBlogs(foo.sort( (a, b) => -a.likes + b.likes ))
-    await blogService.put({...blog, likes: blog.likes + 1})
+    await blogService.put({ ...blog, likes: blog.likes + 1 })
   }
 
   const remove = async (blog) => {
@@ -103,7 +103,7 @@ const App = () => {
           Logged in as <i> {`${user.name}`} </i>
           <button onClick = {logout}> Log out </button>
         </h3>
-        <Togglable buttonLabel = 'Add a blog'  ref = {AddBlogFormRef}>
+        <Togglable buttonLabel = 'Add a blog'  ref = {AddBlogFormToggleRef}>
           <AddBlogForm addBlog = {addBlog}/>
         </Togglable>
         <h2>Blogs</h2>
@@ -111,16 +111,16 @@ const App = () => {
           <Blog key={blog.id} blog={blog} like={like} remove={remove} user={user}/>
         )}
       </div>
-    )  
+    )
   }
-  
+
   return (
     <div id = "container">
-        <Notification message = {notificationMessage} className = {notificationClass} />
-        {user === null ?
-          <Login login={login} /> :
-          generateLoggedInView()
-        }
+      <Notification message = {notificationMessage} className = {notificationClass} />
+      {user === null ?
+        <Login login={login} /> :
+        generateLoggedInView()
+      }
     </div>
   )
 }

@@ -23,16 +23,16 @@ const Blog = ({ blog, like, remove, user }) => {
     <div className='blog' >
       <div onClick = {toggleInfo} className='blogTitle'>{`${blog.title} - ${blog.author} `}</div>
       <div style = {showInformation}>
-        <ul style={{display: 'block'}}>
+        <ul style={{ display: 'block' }}>
           <li>
             likes: {blog.likes}
-            <button onClick={handleLike} style={{display:'inline', marginLeft: '1ch'}}> like </button> 
+            <button onClick={handleLike} style={{ display:'inline', marginLeft: '1ch' }}> like </button>
           </li>
           <li>url: {blog.url} </li>
           <li>added by: {blog.user.name} </li>
         </ul>
-      {user.username === blog.user.username &&
-        <button onClick={handleRemove} style={{ margin: '1ch'}}> remove </button> }
+        {user.username === blog.user.username &&
+        <button onClick={handleRemove} style={{ margin: '1ch' }}> remove </button> }
       </div>
     </div>
   )
