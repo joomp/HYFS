@@ -22,8 +22,8 @@ const Blog = ({ blog, like, remove, user }) => {
   return (
     <div className='blog' >
       <div onClick = {toggleInfo} className='blogTitle'>{`${blog.title} - ${blog.author} `}</div>
-      <div style = {showInformation}>
-        <ul style={{ display: 'block' }}>
+      <div style = {showInformation} className='additionalInformation'>
+        <ul>
           <li>
             likes: {blog.likes}
             <button onClick={handleLike} style={{ display:'inline', marginLeft: '1ch' }}> like </button>
