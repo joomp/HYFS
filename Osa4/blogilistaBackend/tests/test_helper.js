@@ -47,5 +47,5 @@ module.exports = {
   initialBlogs,
   initialUser,
   blogsInDatabase,
-  usersInDb,
+  usersInDb
 }

@@ -15,16 +15,22 @@ const App = () => {
   const [notificationClass, setNotificationClass] = useState('notification')
   const AddBlogFormToggleRef = useRef()
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs.sort( (a, b) => -a.likes + b.likes ))
-    )
-  }, [])
-
   const notificationDisplayTime = 3000
 
-  const displayNotification = (message, className) => {
-    setNotificationClass(className)
+  const displayNotification = (message) => {
+    setNotificationClass('notification')
+    setNotificationMessage(message)
+    if (notificationTimeout !== null){
+      clearTimeout(notificationTimeout)
+    }
+    setNotificationTimeout(setTimeout(() => {
+      setNotificationMessage(null)
+      setNotificationTimeout(null)
+    }, notificationDisplayTime))
+  }
+
+  const displayError = (message) => {
+    setNotificationClass('error')
     setNotificationMessage(message)
     if (notificationTimeout !== null){
       clearTimeout(notificationTimeout)
@@ -44,6 +50,12 @@ const App = () => {
     }
   }, [])
 
+  useEffect(() => {
+    blogService.getAll().then(blogs =>
+      setBlogs(blogs.sort( (a, b) => -a.likes + b.likes ))
+    )
+  }, [])
+
   const login = async credentials => {
     try {
       const user = await loginService.login(credentials)
@@ -54,9 +66,9 @@ const App = () => {
       blogService.setToken(user.token)
       let blogs = await blogService.getAll()
       setBlogs(blogs.sort( (a, b) => -a.likes + b.likes ))
-      displayNotification('Logged in successfully', 'notification')
+      displayNotification('Logged in successfully')
     } catch (exception) {
-      displayNotification('Wrong username or password', 'error')
+      displayError('Wrong username or password')
       console.error(exception)
     }
   }
@@ -66,7 +78,7 @@ const App = () => {
     blogService.setToken(null)
     setBlogs([])
     localStorage.removeItem('loggedUser')
-    displayNotification('Logged out', 'notification')
+    displayNotification('Logged out')
   }
 
   const addBlog = async blog => {
@@ -75,9 +87,9 @@ const App = () => {
       console.log(response)
       AddBlogFormToggleRef.current.toggleVisibility()
       setBlogs(blogs.concat(response))
-      displayNotification(`New blog added: ${blog.title} by ${blog.author}`, 'notification')
+      displayNotification(`New blog added: ${blog.title} by ${blog.author}`)
     } catch(exception) {
-      displayNotification(`Error: Adding ${blog.title} failed`, 'error')
+      displayError(`Error: Adding ${blog.title} failed`)
       console.error(exception)
     }
   }

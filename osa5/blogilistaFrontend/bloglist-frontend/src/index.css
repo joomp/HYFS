@@ -30,7 +30,6 @@ code {
   display: block;
   padding: 1%;
   cursor: pointer;
-  user-select: none; 
 }
 
 .blog:hover {

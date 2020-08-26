@@ -25,7 +25,7 @@ const Blog = ({ blog, like, remove, user }) => {
       <div style = {showInformation} className='additionalInformation'>
         <ul>
           <li>
-            likes: {blog.likes}
+            <span id='likes'> likes: {blog.likes} </span>
             <button onClick={handleLike} style={{ display:'inline', marginLeft: '1ch' }}> like </button>
           </li>
           <li>url: {blog.url} </li>
