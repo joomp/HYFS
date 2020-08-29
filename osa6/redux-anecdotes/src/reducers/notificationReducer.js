@@ -4,20 +4,40 @@ const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'NOTIFICATION':
       return state = action.data.notification
-    case 'VOTE':
-        return state = `You voted '${action.data.anecdote}'`
-    case 'ADD':
-        return state = `You added '${action.data.anecdote}'`
     default:
       return state
   }
 }
 
-export const setNotification = (content) => {
+let timer = null
+
+const wait = seconds => {
+  return new Promise(resolve => {
+    if (timer){
+      clearTimeout(timer)
+    }
+    timer = setTimeout(resolve, 1000*seconds)
+  })
+}
+
+export const setNotification = (content, seconds) => {
+  return async dispatch => {
+    dispatch({
+      type: 'NOTIFICATION',
+      data: {
+        notification: content
+      }
+    })
+    await wait(seconds)
+    dispatch(clearNotification())
+  }
+}
+
+const clearNotification = () => {
   return {
     type: 'NOTIFICATION',
     data: {
-      notification: content
+      notification: ""
     }
   }
 }
