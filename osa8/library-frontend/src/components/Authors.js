@@ -1,7 +1,7 @@
-  
-import React, {useState} from 'react'
+
+import React, { useState } from 'react'
 import Select from 'react-select'
-import {useQuery, useMutation} from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { ALL_AUTHORS } from '../queries'
 import { UPDATE_AUTHOR } from '../mutations'
 
@@ -10,7 +10,7 @@ const Authors = (props) => {
   const [authorName, setAuthorName] = useState('')
   const [bornTo, setBornTo] = useState('')
   const [editAuthor] = useMutation(UPDATE_AUTHOR, {
-    refetchQueries: [{query: ALL_AUTHORS}]
+    refetchQueries: [{ query: ALL_AUTHORS }]
   })
 
   if (!props.show || query.loading) {
@@ -20,12 +20,12 @@ const Authors = (props) => {
 
   const handleUpdateAuthor = (e) => {
     e.preventDefault()
-    editAuthor({variables: {name: authorName, born: parseInt(bornTo)}})
+    editAuthor({ variables: { name: authorName, born: parseInt(bornTo) } })
     setBornTo('')
     setAuthorName('')
   }
 
-  const selectOptions = authors.map(a => { return {value: a.name, label: a.name}})
+  const selectOptions = authors.map(a => { return { value: a.name, label: a.name }})
 
   return (
     <div>
@@ -53,7 +53,7 @@ const Authors = (props) => {
       <h2>Set birth year</h2>
       <form onSubmit={handleUpdateAuthor}>
         <div>
-          <Select options={selectOptions} onChange={({value}) =>setAuthorName(value)}/>
+          <Select options={selectOptions} onChange={({ value }) => setAuthorName(value)}/>
         </div>
         <div>
           Born: <input value={bornTo}
