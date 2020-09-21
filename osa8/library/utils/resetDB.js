@@ -95,7 +95,6 @@ const books = [
 const reset = async () => {
   await Author.deleteMany({})
   await Book.deleteMany({})
-  await User.deleteMany({})
   for (author of authors) {
     console.log(author.name)
     const auth = new Author(author)
@@ -107,8 +106,9 @@ const reset = async () => {
     let author = await Author.findOne({name: book.author})
     if (!author){
       author = new Author({name: book.author, born: null})
-      author = await author.save()
     }
+    author.bookCount += 1
+    author = await author.save()
     const b = new Book({...book, author: author._id})
     await b.save()
   }

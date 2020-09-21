@@ -6,7 +6,9 @@ import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
 import Notification from './components/Notification'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient, useSubscription } from '@apollo/client'
+import { BOOK_ADDED } from './subscriptions'
+import { ALL_AUTHORS, ALL_BOOKS } from './queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -19,6 +21,30 @@ const App = () => {
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
+  }
+
+  const updateCacheWith = newBook => {
+    const includedIn = (set, object) => set.map(o => o.id).includes(object.id)
+    const variables =  newBook.genres.map(g => { return { genre: g }}).concat(null)
+
+    for (const variable of variables) {
+      let dataInStore = client.readQuery({ query: ALL_BOOKS })
+      if (!includedIn(dataInStore.allBooks, newBook)) {
+        client.writeQuery({
+          query: ALL_BOOKS,
+          variables: variable,
+          data: { allBooks : dataInStore.allBooks.concat(newBook) }
+        })
+      }
+    }
+
+    let dataInStore = client.readQuery({ query: ALL_AUTHORS })
+    client.writeQuery({
+      query: ALL_AUTHORS,
+      data: { allAuthors : dataInStore.allAuthors.map(author => {
+        return author.id === newBook.author.id ? newBook.author : author
+      }) }
+    })
   }
 
   const logout = () => {
@@ -38,6 +64,12 @@ const App = () => {
       setToken(storedToken)
     }
   }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      updateCacheWith(subscriptionData.data.bookAdded)
+    }
+  })
 
   return (
     <div>
